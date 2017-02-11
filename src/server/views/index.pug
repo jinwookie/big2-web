@@ -1,0 +1,12 @@
+doctype html
+html
+  head
+    title Jinwookie
+  body
+    div#react-container !{htmlString}
+    script.
+      window.__INITIAL_STATE__ = !{JSON.stringify(initialState)};
+    if process.env.NODE_ENV === 'production'
+      script(src="/public/js/app.js")
+    else
+      script(src="http://localhost:8080/public/js/app.js")

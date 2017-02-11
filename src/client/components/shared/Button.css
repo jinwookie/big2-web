@@ -1,0 +1,53 @@
+@import "~styles/variables";
+
+.button {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: $base-font-size;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &.button-default {
+    border: solid 1px black;
+    background-color: white;
+    color: black;
+  }
+
+  &.button-primary {
+    border: solid 1px black;
+    background-color: black;
+    color: white;
+  }
+
+  &.button-secondary {
+    border: solid 1px grey;
+    background-color: grey;
+    color: white;
+  }
+
+  &.button-link {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    text-transform: none;
+    font-weight: normal;
+  }
+
+  &.button-icon {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    text-transform: none;
+    font-weight: normal;
+  }
+
+  &.disabled {
+    opacity: 0.7;
+  }
+}

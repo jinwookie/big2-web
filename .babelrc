@@ -1,0 +1,21 @@
+{
+  "presets": [
+    "es2015",
+    "react",
+    "es2017",
+    "stage-2"
+  ],
+  "env": {
+    "node": {
+      "plugins": [
+        [
+          "babel-plugin-transform-require-ignore",
+          {
+            "extensions": [".scss", ".css"]
+          }
+        ],
+        ["system-import-transformer", { "modules": "common" }]
+      ]
+    }
+  }
+}

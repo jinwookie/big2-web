@@ -1,0 +1,10 @@
+.icon {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  background-size: contain;
+
+  &.icon-loading {
+    
+  }
+}

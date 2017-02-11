@@ -1,0 +1,18 @@
+@import "~styles/variables";
+
+#app-container {
+  #app-header {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.9);
+    top: 0;
+    width: 100%;
+    padding: 10px;
+    color: white;
+
+    .logo {
+      font-size: 18px;
+      color: $logo-color;
+      font-weight: bold;
+    }
+  }
+}

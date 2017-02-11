@@ -1,0 +1,26 @@
+.table {
+  margin-left: -6px;
+  .table-header {
+    display: flex;
+    align-items: center;
+  }
+  .table-row {
+    display: flex;
+    align-items: center;
+  }
+  .table-column {
+    padding: 6px;
+    width: 120px;
+    &.icon {
+      width: 50px;
+    }
+    &.buttons {
+      text-align: right;
+      width: 90px;
+    }
+    &.grow {
+      flex-grow: 1;
+      width: auto;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+#app-container #app-header {
+  z-index: 1000;
+  #app-nav {
+    display: inline-block;
+    margin-left: 30px;
+    ul {
+      display: flex;
+      margin: 0 0 0 -15px;
+      padding: 0;
+      li {
+        list-style-type: none;
+        margin: 0 15px;
+        padding: 0;
+        a {
+          font-size: 14px;
+          display: block;
+          padding: 3px;
+          color: white;
+        }
+      }
+    }
+  }
+}
