@@ -7,7 +7,7 @@ const initialState = {
   data: [ ]
 };
 
-export default function productIndexReducer(state = initialState, action) {
+export default function playerIndexReducer(state = initialState, action) {
   switch (action.type) {
   case C.GET_REQUEST:
     return state.set('isLoading', true);

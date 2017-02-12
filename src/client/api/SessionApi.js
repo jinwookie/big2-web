@@ -7,3 +7,7 @@ export function createSession() {
   return FetchApi.post(`${url}/sessions`, null, { 'Content-Type': 'application/json' })
     .then(response => response.json());
 }
+
+export function getSessions() {
+  return FetchApi.get(`${url}/sessions`).then(response => response.json());
+}

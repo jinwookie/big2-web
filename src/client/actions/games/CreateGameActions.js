@@ -1,3 +1,4 @@
+import { push } from 'react-router-redux';
 import { PlayerApi, SessionApi, SessionPlayerApi } from 'api';
 import { CreateGameConstants as C } from 'constants/games';
 
@@ -19,12 +20,23 @@ export const getPlayers = () => {
   };
 };
 
+export const changePlayer = (index, value) => {
+  return {
+    type: C.CHANGE,
+    payload: {
+      index,
+      value
+    }
+  };
+};
+
 export const createGame = players => {
   return async dispatch => {
     dispatch({ type: C.CREATE_REQUEST });
     try {
       const session = await SessionApi.createSession();
       await SessionPlayerApi.addPlayers(session.id, players.map(player => player.id));
+      dispatch(push(`/games/edit/${session.id}`));
       return session;
     } catch (err) {
       dispatch({ type: C.CREATE_ERROR, payload: err, error: true });

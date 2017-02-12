@@ -8,6 +8,7 @@ import {
 } from 'components/shared';
 import { CreateGamePlayers } from 'components/games';
 import { CreateGameActions as Actions } from 'actions/games';
+import { createGameSelector, selectedPlayersSelector } from 'selectors/games';
 
 class GamesCreate extends Component {
   static fetchData({ dispatch }) {
@@ -19,18 +20,18 @@ class GamesCreate extends Component {
   }
 
   render() {
-    const { data } = this.props;
+    const { dispatch, data, selected, isSaving } = this.props;
 
     return (
       <div className="create-game-container">
         <h1>CREATE GAME</h1>
         <Form>
           <FormGroup label="ADD PLAYERS:">
-            <CreateGamePlayers players={data} />
+            <CreateGamePlayers players={data} onChange={(id, checked, index) => dispatch(Actions.changePlayer(index, checked))} />
           </FormGroup>
           <div className="buttons">
             <Link to="/games" className="button button-default">CANCEL</Link>
-            <Button type="primary">CREATE</Button>
+            <Button type="primary" isLoading={isSaving} loadingText="CREATING" onClick={() => dispatch(Actions.createGame(selected))}>CREATE</Button>
           </div>
         </Form>
       </div>
@@ -39,13 +40,20 @@ class GamesCreate extends Component {
 }
 
 GamesCreate.propTypes = {
-  data: PropTypes.array
+  dispatch: PropTypes.func,
+  data: PropTypes.array,
+  selected: PropTypes.array,
+  isSaving: PropTypes.bool
+};
+
+GamesCreate.defaultProps = {
+  isSaving: false
 };
 
 const mapStateToProps = state => {
-  const { games } = state;
   return {
-    ...games.create.toJS()
+    ...createGameSelector(state),
+    selected: selectedPlayersSelector(state)
   };
 };
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { PlayerTable } from 'components/players';
 import { PlayerIndexActions as Actions } from 'actions/players';
 import { LoadingOverlay } from 'components/shared';
+import * as PlayersSelector from 'selectors/players';
 
 class PlayerIndex extends Component {
   static fetchData({ dispatch }) {
@@ -37,7 +38,7 @@ class PlayerIndex extends Component {
 
 function mapStateToProps(state) {
   return {
-    index: state.players.index.toJS()
+    index: PlayersSelector.playerIndexSelector(state)
   };
 }
 

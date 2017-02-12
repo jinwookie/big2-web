@@ -11,7 +11,7 @@ const CreateGamePlayers = ({
   <ul className="create-game-players-container">
     {
       players.map((player, index) =>
-        <li key={index}><CheckBox isChecked={player.isSelected} onChange={checked => onChange(player.id, index, checked)}>{player.firstname} {player.lastname}</CheckBox></li>
+        <li key={index}><CheckBox isChecked={player.isSelected} onChange={checked => onChange(player.id, checked, index)}>{player.firstname} {player.lastname}</CheckBox></li>
       )
     }
   </ul>;

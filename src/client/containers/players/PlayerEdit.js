@@ -2,6 +2,7 @@ import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { PlayerForm } from 'components/players';
 import { PlayerFormActions as Actions } from 'actions/players';
+import * as PlayersSelector from 'selectors/players';
 
 class PlayerEdit extends Component {
   static fetchData({ dispatch, routes, params }) {
@@ -36,8 +37,7 @@ PlayerEdit.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { players } = state;
-  const { isLoading, isSaving, data: player } = players.form.toJS();
+  const { isLoading, isSaving, data: player } = PlayersSelector.playerFormSelector(state);
 
   return {
     isLoading,
