@@ -4,6 +4,13 @@ export const createGameSelector = state => state.games.create.toJS();
 export const indexGamesSelector = state => state.games.index.toJS();
 export const editGameSelector = state => state.games.edit.toJS();
 
+export const sessionSelector = sessionId => createSelector(
+  indexGamesSelector,
+  ({
+    data: sessions
+  }) => sessions.find(session => session.id === sessionId)
+);
+
 export const selectedPlayersSelector = createSelector(
   createGameSelector,
   ({

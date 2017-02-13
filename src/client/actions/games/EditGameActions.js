@@ -1,4 +1,6 @@
-import { SessionPlayerApi, GameApi } from 'api';
+import moment from 'moment';
+import { push } from 'react-router-redux';
+import { SessionPlayerApi, GameApi, SessionApi } from 'api';
 import { EditGameConstants as C } from 'constants/games';
 
 export const getGame = sessionId => async dispatch => {
@@ -71,6 +73,22 @@ export const deleteGame = (sessionId, gameId, index) => dispatch => {
   return GameApi.deleteGame(sessionId, gameId).then(dispatch({ type: C.DELETE_SUCCESS, payload: { index } }))
     .catch(err => {
       dispatch({ type: C.DELETE_ERROR, payload: err, error: true });
+      throw err;
+    });
+};
+
+export const endGame = sessionId => dispatch => {
+  dispatch({ type: C.END_REQUEST });
+  return SessionApi.getSession(sessionId)
+    .then(session => {
+      session.end = moment.utc();
+      return session;
+    })
+    .then(session => SessionApi.updateSession(sessionId, session))
+    .then(() => dispatch({ type: C.END_SUCCESS }))
+    .then(() => push('/games'))
+    .catch(err => {
+      dispatch({ type: C.END_ERROR });
       throw err;
     });
 };

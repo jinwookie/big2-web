@@ -4,13 +4,17 @@ import { EditGameActions as Actions } from 'actions/games';
 import * as GamesSelector from 'selectors/games';
 import {
   Table,
-  TableHeader,
   TableColumn,
   TableRow,
-  TextBox,
   Button,
   Icon
 } from 'components/shared';
+import {
+  EditGamePlayersHeader,
+  EditGameTotalRow,
+  EditGameAverageRow,
+  EditGameInputRow
+} from 'components/games';
 
 class GamesEdit extends Component {
   static fetchData({ dispatch, params }) {
@@ -22,43 +26,24 @@ class GamesEdit extends Component {
   }
 
   render() {
-    const { dispatch, players, games, scores, total, average, params } = this.props;
+    const { dispatch, players, games, scores, total, average, params, isEnding } = this.props;
 
     return (
       <div>
+        <header>
+          <h1>GAME</h1>
+          <div>
+            <Button type="primary" isLoading={isEnding} loadingText="ENDING" onClick={() => dispatch(Actions.endGame(params.id))}>END GAME</Button>
+          </div>
+        </header>
         <Table>
-          <TableHeader>
-            {
-              players.map((player, index) =>
-                <TableColumn key={index}>{ player.firstname }</TableColumn>
-              )
-            }
-            <TableColumn type="buttons"></TableColumn>
-          </TableHeader>
-          <TableRow>
-            {
-              total.map((player, index) =>
-                <TableColumn key={index}>{ player.score }</TableColumn>
-              )
-            }
-          </TableRow>
-          <TableRow>
-            {
-              average.map((player, index) =>
-                <TableColumn key={index}>{ player.average }</TableColumn>
-              )
-            }
-          </TableRow>
-          <TableRow>
-            {
-              scores.map((score, index) =>
-                <TableColumn key={index}>
-                  <TextBox type="number" value={score.score} onUpdate={text => dispatch(Actions.changeScore(score.id, text, index))} />
-                </TableColumn>
-              )
-            }
-            <TableColumn type="buttons"><Button type="icon" onClick={() => dispatch(Actions.addGame(params.id, scores))}><Icon type="plus" /></Button></TableColumn>
-          </TableRow>
+          <EditGamePlayersHeader players={players} />
+          <EditGameTotalRow total={total} />
+          <EditGameAverageRow average={average} />
+          <EditGameInputRow
+            scores={scores}
+            onChange={(id, score, index) => dispatch(Actions.changeScore(id, score, index))}
+            onAdd={() => dispatch(Actions.addGame(params.id, scores))} />
           {
             games.map((game, index) =>
               <TableRow key={index}>
@@ -80,6 +65,7 @@ class GamesEdit extends Component {
 }
 
 GamesEdit.propTypes = {
+  isEnding: PropTypes.bool,
   players: PropTypes.array,
   games: PropTypes.array,
   scores: PropTypes.array,
@@ -89,19 +75,20 @@ GamesEdit.propTypes = {
   params: PropTypes.object
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const edit = GamesSelector.editGameSelector(state);
 
-  const { players, scores, isSaving, isLoading } = edit;
+  const { players, scores, isSaving, isLoading, isEnding } = edit;
 
   return {
     players,
     scores,
     isSaving,
     isLoading,
+    isEnding,
     games: GamesSelector.gamesSelector(state),
     total: GamesSelector.totalSelector(state),
-    average: GamesSelector.averageSelector(state)
+    average: GamesSelector.averageSelector(state),
   };
 };
 

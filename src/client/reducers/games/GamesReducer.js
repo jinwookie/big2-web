@@ -17,6 +17,8 @@ const initialIndexState = {
 const initialEditState = {
   isLoading: false,
   isSaving: false,
+  isDeleting: false,
+  isEnding: false,
   players: [ ],
   games: [ ],
   scores: [ ]
@@ -117,6 +119,11 @@ const editGameReducer = (state = initialEditState, action) => {
       isDeleting: false,
       games: state.get('games').delete(action.payload.index)
     });
+  case EDIT.END_REQUEST:
+    return state.set('isEnding', true);
+  case EDIT.END_SUCCESS:
+  case EDIT.END_ERROR:
+    return state.set('isEnding', false);
   default:
     return fromJS(state);
   }
