@@ -47,15 +47,30 @@ export const addGame = (sessionId, scores) =>
         ...acc,
         {
           playerId: current.id,
-          score: current.score
+          score: parseInt(current.score)
         }
       ];
     }, [ ]);
 
     return GameApi.createGame(sessionId, addScores)
-      .then(() => dispatch({ type: C.CREATE_SUCCESS }))
+      .then(game => {
+        game.scores = addScores.map(score => ({
+          playerid: score.playerId,
+          score: score.score
+        }));
+        dispatch({ type: C.CREATE_SUCCESS, payload: game });
+      })
       .catch(err => {
         dispatch({ type: C.CREATE_ERROR, payload: err, error: true });
         throw err;
       });
   };
+
+export const deleteGame = (sessionId, gameId, index) => dispatch => {
+  dispatch({ type: C.DELETE_REQUEST });
+  return GameApi.deleteGame(sessionId, gameId).then(dispatch({ type: C.DELETE_SUCCESS, payload: { index } }))
+    .catch(err => {
+      dispatch({ type: C.DELETE_ERROR, payload: err, error: true });
+      throw err;
+    });
+};

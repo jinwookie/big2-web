@@ -17,6 +17,9 @@
     &.buttons {
       text-align: right;
       width: 90px;
+      >*+* {
+        margin-left: 10px;
+      }
     }
     &.grow {
       flex-grow: 1;

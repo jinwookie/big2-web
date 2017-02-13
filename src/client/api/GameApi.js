@@ -1,4 +1,4 @@
-import * as FetchApi from './FetchApi';
+import * as FetchApi from './OAuthApi';
 import config from 'config';
 
 const url = config.api.url;
@@ -14,4 +14,8 @@ export function getGames(sessionId) {
 
 export function getGame(sessionId, gameId) {
   return FetchApi.get(`${url}/sessions/${sessionId}/games/${gameId}`).then(response => response.json());
+}
+
+export function deleteGame(sessionId, gameId) {
+  return FetchApi.del(`${url}/sessions/${sessionId}/games/${gameId}`);
 }

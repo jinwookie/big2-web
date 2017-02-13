@@ -10,6 +10,7 @@ const initialCreateState = {
 
 const initialIndexState = {
   isLoading: false,
+  isDeleting: false,
   data: [ ]
 };
 
@@ -40,6 +41,11 @@ const createGameReducer = (state = initialCreateState, action) => {
     return state.merge({
       data: state.get('data').set(action.payload.index, state.get('data').get(action.payload.index).set('isSelected', action.payload.value))
     });
+  case C.CREATE_REQUEST:
+    return state.set('isSaving', true);
+  case C.CREATE_SUCCESS:
+  case C.CREATE_ERROR:
+    return state.set('isSaving', false);
   default:
     return fromJS(state);
   }
@@ -60,11 +66,15 @@ const gamesIndexReducer = (state = initialIndexState, action) => {
     return state.merge({
       isLoading: false
     });
-  case INDEX.CREATE_REQUEST:
-    return state.set('isSaving', true);
-  case INDEX.CREATE_SUCCESS:
-  case INDEX.CREATE_ERROR:
-    return state.set('isSaving', false);
+  case INDEX.DELETE_REQUEST:
+    return state.set('isDeleting', true);
+  case INDEX.DELETE_SUCCESS:
+    return state.merge({
+      isDeleting: false,
+      data: state.get('data').delete(action.payload.index)
+    });
+  case INDEX.DELETE_ERROR:
+    return state.set('isDeleting', false);
   default:
     return fromJS(state);
   }
@@ -90,8 +100,23 @@ const editGameReducer = (state = initialEditState, action) => {
   case EDIT.CREATE_REQUEST:
     return state.set('isSaving', true);
   case EDIT.CREATE_SUCCESS:
+    return state.merge({
+      isSaving: false,
+      games: state.get('games').insert(0, action.payload),
+      scores: state.get('scores').map(score => fromJS({
+        id: score.get('id'),
+        score: ''
+      }))
+    });
   case EDIT.CREATE_ERROR:
     return state.set('isSaving', false);
+  case EDIT.DELETE_REQUEST:
+    return state.set('isDeleting', true);
+  case EDIT.DELETE_SUCCESS:
+    return state.merge({
+      isDeleting: false,
+      games: state.get('games').delete(action.payload.index)
+    });
   default:
     return fromJS(state);
   }

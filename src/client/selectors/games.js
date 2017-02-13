@@ -38,3 +38,34 @@ export const gamesSelector = createSelector(
     })
   )
 );
+
+export const totalSelector = createSelector(
+  gamesSelector,
+  games =>
+    games.reduce((acc, game) =>
+      game.scores.map(score => {
+        const found = acc.find(a => a.playerid === score.playerid);
+        if (!found)
+          return { playerid: score.playerid, score: isNaN(score.score) ? 0 : score.score };
+        if (isNaN(score.score))
+          return found;
+        return { playerid: found.playerid, score: found.score + score.score };
+      })
+    , [ ])
+);
+
+export const averageSelector = createSelector(
+  totalSelector,
+  gamesSelector,
+  (totals, games) =>
+    totals.map(total => {
+      const gamesPlayed = games.filter(game =>
+        game.scores.some(score => score.playerid === total.playerid && !isNaN(score.score))
+      );
+      const avg = total.score / gamesPlayed.length;
+      return {
+        playerid: total.playerid,
+        average: games.length > 0 ? Math.round(avg * 100) / 100 : 'N/A'
+      };
+    })
+);

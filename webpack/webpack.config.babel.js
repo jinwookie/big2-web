@@ -5,6 +5,9 @@ import {
   //HotModuleReplacementPlugin,
   NamedModulesPlugin
 } from 'webpack';
+import dotenv from 'dotenv';
+
+dotenv.config({ silent: true });
 
 const ENV = process.env.ENV || 'development';
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -108,6 +111,7 @@ export default [
         'Promise': 'bluebird'
       }),
       new DefinePlugin({
+        'process.env.TOKEN': JSON.stringify(process.env.TOKEN),
         'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
       }),
       //new HotModuleReplacementPlugin(),

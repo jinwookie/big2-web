@@ -1,4 +1,4 @@
-import * as FetchApi from './FetchApi';
+import * as FetchApi from './OAuthApi';
 import config from 'config';
 
 const url = config.api.url;

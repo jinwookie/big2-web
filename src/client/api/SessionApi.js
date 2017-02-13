@@ -1,4 +1,4 @@
-import * as FetchApi from './FetchApi';
+import * as FetchApi from './OAuthApi';
 import config from 'config';
 
 const url = config.api.url;
@@ -10,4 +10,8 @@ export function createSession() {
 
 export function getSessions() {
   return FetchApi.get(`${url}/sessions`).then(response => response.json());
+}
+
+export function deleteSession(id) {
+  return FetchApi.del(`${url}/sessions/${id}`);
 }

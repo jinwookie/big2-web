@@ -1,6 +1,9 @@
 import path from 'path';
 import { ProvidePlugin } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
+import dotenv from 'dotenv';
+
+dotenv.config({ silent: true });
 
 const ENV = process.env.ENV || 'development';
 const config = `../src/client/config/${ENV}.json`;

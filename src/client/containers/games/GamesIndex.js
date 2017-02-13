@@ -15,7 +15,7 @@ class GamesIndex extends Component {
   }
 
   render() {
-    const { games } = this.props;
+    const { dispatch, games } = this.props;
     return (
       <div>
         <header>
@@ -24,13 +24,14 @@ class GamesIndex extends Component {
             <Link to="/games/create" className="button button-default">START GAME</Link>
           </div>
         </header>
-        <GamesIndexTable games={games} />
+        <GamesIndexTable games={games} onDelete={(id, index) => dispatch(Actions.deleteSession(id, index))} />
       </div>
     );
   }
 }
 
 GamesIndex.propTypes = {
+  dispatch: PropTypes.func,
   games: PropTypes.array
 };
 

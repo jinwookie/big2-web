@@ -22,7 +22,7 @@ class GamesEdit extends Component {
   }
 
   render() {
-    const { dispatch, players, games, scores, params } = this.props;
+    const { dispatch, players, games, scores, total, average, params } = this.props;
 
     return (
       <div>
@@ -35,6 +35,20 @@ class GamesEdit extends Component {
             }
             <TableColumn type="buttons"></TableColumn>
           </TableHeader>
+          <TableRow>
+            {
+              total.map((player, index) =>
+                <TableColumn key={index}>{ player.score }</TableColumn>
+              )
+            }
+          </TableRow>
+          <TableRow>
+            {
+              average.map((player, index) =>
+                <TableColumn key={index}>{ player.average }</TableColumn>
+              )
+            }
+          </TableRow>
           <TableRow>
             {
               scores.map((score, index) =>
@@ -54,7 +68,7 @@ class GamesEdit extends Component {
                   )
                 }
                 <TableColumn type="buttons">
-                  <Button type="icon"><Icon type="trash" /></Button>
+                  <Button type="icon" onClick={() => dispatch(Actions.deleteGame(params.id, game.id, index))}><Icon type="trash" /></Button>
                 </TableColumn>
               </TableRow>
             )
@@ -69,6 +83,8 @@ GamesEdit.propTypes = {
   players: PropTypes.array,
   games: PropTypes.array,
   scores: PropTypes.array,
+  total: PropTypes.array,
+  average: PropTypes.array,
   dispatch: PropTypes.func,
   params: PropTypes.object
 };
@@ -83,7 +99,9 @@ const mapStateToProps = state => {
     scores,
     isSaving,
     isLoading,
-    games: GamesSelector.gamesSelector(state)
+    games: GamesSelector.gamesSelector(state),
+    total: GamesSelector.totalSelector(state),
+    average: GamesSelector.averageSelector(state)
   };
 };
 
