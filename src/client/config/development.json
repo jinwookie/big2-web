@@ -1,6 +1,6 @@
 {
   "api": {
-    "url": "http://localhost:3000",
+    "url": "https://jinwookie-big2-api.herokuapp.com",
     "token": "840Z3&3ngx8h"
   }
 }

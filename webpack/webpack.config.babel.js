@@ -84,8 +84,8 @@ export default [
         {
           test: /\.s?css$/,
           include: [
-            path.join(__dirname, '../src/client'),
-            path.join(__dirname, '../node_modules/font-awesome')
+            path.resolve(__dirname, '../src/client'),
+            path.resolve(__dirname, '../node_modules/font-awesome')
           ],
           use: isProd ? ExtractTextPlugin.extract(
             [
@@ -140,7 +140,7 @@ export default [
           warnings: false
         }
       }),
-      new ExtractTextPlugin('styles.css')
+      new ExtractTextPlugin({ filename: 'styles.css', allChunks: true })
     ] : [
       //new HotModuleReplacementPlugin(),
       new NamedModulesPlugin()
