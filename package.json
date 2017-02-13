@@ -9,7 +9,7 @@
     "clean:client": "rimraf \"public\"",
     "clean": "npm run clean:server && npm run clean:client",
     "dev:server": "BABEL_ENV=node nodemon --exec babel-node src/server/app.js",
-    "webpack:dev:server": "NODE_ENV=development BABEL_ENV=node webpack --config webpack/webpack.server.config.babel.js --watch",
+    "webpack:dev:server": "NODE_ENV=development BABEL_ENV=node webpack --config webpack/webpack.server.config.babel.js",
     "webpack:dev:client": "NODE_ENV=development webpack-dev-server --config webpack/webpack.config.babel.js",
     "dev": "concurrently --kill-others \"npm run webpack:dev:server\" \"npm run webpack:dev:client\" \"npm run dev:start\"",
     "build:prod": "npm run clean && npm run webpack:prod:server && npm run webpack:prod:client",
