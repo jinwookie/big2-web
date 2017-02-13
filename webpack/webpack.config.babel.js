@@ -3,11 +3,15 @@ import {
   ProvidePlugin,
   DefinePlugin,
   //HotModuleReplacementPlugin,
+  optimize,
   NamedModulesPlugin
 } from 'webpack';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import dotenv from 'dotenv';
 
 dotenv.config({ silent: true });
+
+const { UglifyJsPlugin } = optimize;
 
 const ENV = process.env.ENV || 'development';
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -18,7 +22,7 @@ const config = `../src/client/config/${ENV}.json`;
 export default [
   {
     name: 'client',
-    devtool: 'inline-source-map',
+    devtool: isProd ? 'hidden-source-map' : 'inline-source-map',
     devServer: {
       //hot: true, // enable HMR on the server
       inline: true,
@@ -83,7 +87,23 @@ export default [
             path.join(__dirname, '../src/client'),
             path.join(__dirname, '../node_modules/font-awesome')
           ],
-          use: [
+          use: isProd ? ExtractTextPlugin.extract(
+            [
+              {
+                loader: 'css-loader',
+                options: {
+                  sourceMap: false
+                }
+              },
+              {
+                loader: 'sass-loader',
+                options: {
+                  sourceMap: false
+                }
+              }
+            ]
+          ) :
+          [
             'style-loader',
             {
               loader: 'css-loader',
@@ -113,9 +133,17 @@ export default [
       new DefinePlugin({
         'process.env.TOKEN': JSON.stringify(process.env.TOKEN),
         'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
+      })
+    ].concat(isProd ? [
+      new UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
       }),
+      new ExtractTextPlugin('styles.css')
+    ] : [
       //new HotModuleReplacementPlugin(),
       new NamedModulesPlugin()
-    ]
+    ])
   }
 ];

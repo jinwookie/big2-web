@@ -1,7 +1,9 @@
 doctype html
 html
   head
-    title Jinwookie
+    title BIG2
+    if process.env.NODE_ENV === 'production'
+      link(rel="stylesheet" href="/public/js/styles.css")
   body
     div#react-container !{htmlString}
     script.
