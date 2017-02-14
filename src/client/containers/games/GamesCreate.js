@@ -4,7 +4,8 @@ import { Link } from 'react-router';
 import {
   Form,
   FormGroup,
-  Button
+  Button,
+  LoadingOverlay
 } from 'components/shared';
 import { CreateGamePlayers } from 'components/games';
 import { CreateGameActions as Actions } from 'actions/games';
@@ -20,20 +21,22 @@ class GamesCreate extends Component {
   }
 
   render() {
-    const { dispatch, data, selected, isSaving } = this.props;
+    const { dispatch, data, selected, isSaving, isLoading } = this.props;
 
     return (
       <div className="create-game-container">
         <h1>CREATE GAME</h1>
-        <Form>
-          <FormGroup label="ADD PLAYERS:">
-            <CreateGamePlayers players={data} onChange={(id, checked, index) => dispatch(Actions.changePlayer(index, checked))} />
-          </FormGroup>
-          <div className="buttons">
-            <Link to="/games" className="button button-default">CANCEL</Link>
-            <Button type="primary" isLoading={isSaving} loadingText="CREATING" onClick={() => dispatch(Actions.createGame(selected))}>CREATE</Button>
-          </div>
-        </Form>
+        <LoadingOverlay isLoading={isLoading}>
+          <Form>
+            <FormGroup label="ADD PLAYERS:">
+              <CreateGamePlayers players={data} onChange={(id, checked, index) => dispatch(Actions.changePlayer(index, checked))} />
+            </FormGroup>
+            <div className="buttons">
+              <Link to="/games" className="button button-default">CANCEL</Link>
+              <Button type="primary" isLoading={isSaving} loadingText="CREATING" onClick={() => dispatch(Actions.createGame(selected))}>CREATE</Button>
+            </div>
+          </Form>
+        </LoadingOverlay>
       </div>
     );
   }
@@ -43,11 +46,13 @@ GamesCreate.propTypes = {
   dispatch: PropTypes.func,
   data: PropTypes.array,
   selected: PropTypes.array,
-  isSaving: PropTypes.bool
+  isSaving: PropTypes.bool,
+  isLoading: PropTypes.bool
 };
 
 GamesCreate.defaultProps = {
-  isSaving: false
+  isSaving: false,
+  isLoading: false
 };
 
 const mapStateToProps = state => {

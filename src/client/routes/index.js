@@ -7,6 +7,10 @@ function loadRoute(cb) {
 const rootRoute = {
   path: '/',
   component: AppContainer,
+  getIndexRoute: (partialNextState, cb) => {
+    System.import('containers/dashboard/Dashboard')
+      .then(module => cb(null, { component: module.default }));
+  },
   childRoutes: [
     {
       path: 'players',

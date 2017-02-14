@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { GamesIndexActions as Actions } from 'actions/games';
 import * as GamesSelector from 'selectors/games';
 import { GamesIndexTable } from 'components/games';
+import { LoadingOverlay } from 'components/shared';
 
 class GamesIndex extends Component {
   static fetchData({ dispatch }) {
@@ -15,7 +16,7 @@ class GamesIndex extends Component {
   }
 
   render() {
-    const { dispatch, games } = this.props;
+    const { dispatch, games, isLoading } = this.props;
     return (
       <div>
         <header>
@@ -24,7 +25,9 @@ class GamesIndex extends Component {
             <Link to="/games/create" className="button button-default">START GAME</Link>
           </div>
         </header>
-        <GamesIndexTable games={games} onDelete={(id, index) => dispatch(Actions.deleteSession(id, index))} />
+        <LoadingOverlay isLoading={isLoading}>
+          <GamesIndexTable games={games} onDelete={(id, index) => dispatch(Actions.deleteSession(id, index))} />
+        </LoadingOverlay>
       </div>
     );
   }
@@ -32,7 +35,8 @@ class GamesIndex extends Component {
 
 GamesIndex.propTypes = {
   dispatch: PropTypes.func,
-  games: PropTypes.array
+  games: PropTypes.array,
+  isLoading: PropTypes.bool
 };
 
 const mapStateToProps = state => {

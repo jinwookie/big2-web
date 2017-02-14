@@ -19,3 +19,7 @@ export function getGame(sessionId, gameId) {
 export function deleteGame(sessionId, gameId) {
   return FetchApi.del(`${url}/sessions/${sessionId}/games/${gameId}`);
 }
+
+export function getDashboard() {
+  return FetchApi.get(`${url}/dashboard`).then(response => response.json());
+}

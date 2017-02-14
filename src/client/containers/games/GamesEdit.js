@@ -7,7 +7,8 @@ import {
   TableColumn,
   TableRow,
   Button,
-  Icon
+  Icon,
+  LoadingOverlay
 } from 'components/shared';
 import {
   EditGamePlayersHeader,
@@ -26,7 +27,7 @@ class GamesEdit extends Component {
   }
 
   render() {
-    const { dispatch, players, games, scores, total, average, params, isEnding } = this.props;
+    const { dispatch, players, games, scores, total, average, params, isEnding, isLoading } = this.props;
 
     return (
       <div>
@@ -36,29 +37,31 @@ class GamesEdit extends Component {
             <Button type="primary" isLoading={isEnding} loadingText="ENDING" onClick={() => dispatch(Actions.endGame(params.id))}>END GAME</Button>
           </div>
         </header>
-        <Table>
-          <EditGamePlayersHeader players={players} />
-          <EditGameTotalRow total={total} />
-          <EditGameAverageRow average={average} />
-          <EditGameInputRow
-            scores={scores}
-            onChange={(id, score, index) => dispatch(Actions.changeScore(id, score, index))}
-            onAdd={() => dispatch(Actions.addGame(params.id, scores))} />
-          {
-            games.map((game, index) =>
-              <TableRow key={index}>
-                {
-                  game.scores.map((score, scoreIndex) =>
-                    <TableColumn key={scoreIndex}>{ score.score }</TableColumn>
-                  )
-                }
-                <TableColumn type="buttons">
-                  <Button type="icon" onClick={() => dispatch(Actions.deleteGame(params.id, game.id, index))}><Icon type="trash" /></Button>
-                </TableColumn>
-              </TableRow>
-            )
-          }
-        </Table>
+        <LoadingOverlay isLoading={isLoading}>
+          <Table>
+            <EditGamePlayersHeader players={players} />
+            <EditGameTotalRow total={total} />
+            <EditGameAverageRow average={average} />
+            <EditGameInputRow
+              scores={scores}
+              onChange={(id, score, index) => dispatch(Actions.changeScore(id, score, index))}
+              onAdd={() => dispatch(Actions.addGame(params.id, scores))} />
+            {
+              games.map((game, index) =>
+                <TableRow key={index}>
+                  {
+                    game.scores.map((score, scoreIndex) =>
+                      <TableColumn key={scoreIndex}>{ score.score === 0 ? <strong>0</strong> : score.score }</TableColumn>
+                    )
+                  }
+                  <TableColumn type="buttons">
+                    <Button type="icon" onClick={() => dispatch(Actions.deleteGame(params.id, game.id, index))}><Icon type="trash" /></Button>
+                  </TableColumn>
+                </TableRow>
+              )
+            }
+          </Table>
+        </LoadingOverlay>
       </div>
     );
   }
@@ -66,6 +69,7 @@ class GamesEdit extends Component {
 
 GamesEdit.propTypes = {
   isEnding: PropTypes.bool,
+  isLoading: PropTypes.bool,
   players: PropTypes.array,
   games: PropTypes.array,
   scores: PropTypes.array,

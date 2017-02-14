@@ -1,0 +1,9 @@
+.dashboard-table {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  >.dashboard-player {
+    width: 300px;
+    margin-bottom: 30px;
+  }
+}

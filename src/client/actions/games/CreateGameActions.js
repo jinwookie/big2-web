@@ -36,6 +36,7 @@ export const createGame = players => {
     try {
       const session = await SessionApi.createSession();
       await SessionPlayerApi.addPlayers(session.id, players.map(player => player.id));
+      dispatch({ type: C.CREATE_SUCCESS });
       dispatch(push(`/games/edit/${session.id}`));
       return session;
     } catch (err) {

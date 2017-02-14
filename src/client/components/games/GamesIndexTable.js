@@ -14,6 +14,7 @@ const GamesIndexTable = ({
   games,
   onDelete
 }) =>
+  games && Array.isArray(games) && games.length > 0 ?
   <Table>
     <TableHeader>
       <TableColumn>Start</TableColumn>
@@ -32,7 +33,7 @@ const GamesIndexTable = ({
         </TableRow>
       )
     }
-  </Table>;
+  </Table> : <h2>NO GAMES</h2>;
 
 GamesIndexTable.propTypes = {
   games: PropTypes.array,
