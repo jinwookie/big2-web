@@ -3,7 +3,13 @@
   justify-content: space-between;
   flex-wrap: wrap;
   >.dashboard-player {
-    width: 300px;
+    width: 150px;
     margin-bottom: 30px;
+    >.dashboard-stats {
+      >div {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
   }
 }
